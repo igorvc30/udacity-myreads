@@ -1,10 +1,10 @@
-import BookCard from '../components/BookCard';
+import Bookshelf from '../components/Bookshelf';
 
 const appRoutes = [
     {
       name: "Home",
       path: "/",
-      component: BookCard,
+      component: Bookshelf,
       exact: true
     },
     
