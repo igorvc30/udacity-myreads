@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types'
-import { Card, Icon, Menu, Dropdown, Button, message, Rate } from "antd";
+import { Card, Icon, Menu, Dropdown, Button, Rate } from "antd";
 
 class BookCard extends Component {
 
@@ -12,7 +12,6 @@ class BookCard extends Component {
   handleMenuClick = (e) => {
     const { book, updateBookShelf } = this.props;
     const { key } = e;
-    message.info(`Click on menu item. ${key}`);
     updateBookShelf(book, key)
   }
 
