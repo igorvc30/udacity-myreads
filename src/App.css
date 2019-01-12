@@ -42,11 +42,11 @@
 }
 
 ul.ant-card-actions > li:first-child{
-  width: 70% !important;
+  width: 75% !important;
 }
 
 ul.ant-card-actions > li:last-child{
-  width: 30% !important;
+  width: 25% !important;
 }
 
 .ant-card-body {
@@ -57,4 +57,35 @@ ul.ant-card-actions > li:last-child{
   font-size: 14px !important;
   text-overflow: none !important;
   white-space: unset !important;
+}
+
+.shelf {
+  border-bottom: 30px solid #855E42;
+  border-left: 20px solid transparent;    
+  /* border-right: 15px solid #f0161600;  */
+  top: -15px;
+  z-index: -1;
+  margin-left: -20px; 
+  margin-right: -20px;
+}
+
+h2{
+  text-shadow: 2px 2px #855E42;
+  text-align: center;
+  color: white;
+  font-family:"Impact";
+  font-size: 40px;
+}
+
+h3{
+  text-shadow: 1px 1px #000;
+  text-align: center;
+  color: #855E42;
+  font-family:"Impact";
+  font-size: 40px;
+}
+
+.book {
+	padding: 15px 0 0 0;
+	margin: auto;
 }
