@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types'
-import { Card, Icon, Menu, Dropdown, Button, Rate } from "antd";
+import { Card, Icon, Menu, Dropdown, Button, Rate, Empty } from "antd";
 
 class BookCard extends Component {
 
   static propTypes = {
     book: PropTypes.object.isRequired,
     updateBookShelf: PropTypes.func.isRequired,
-}
+  }
 
   handleMenuClick = (e) => {
     const { book, updateBookShelf } = this.props;
@@ -51,11 +51,17 @@ class BookCard extends Component {
     return (
       <Card style={{ width: 200, marginTop: 16 }}
         cover={
+          book.imageLinks?
+          (
           <img
             height="220px"
             alt="Book cover"
             src={book.imageLinks.smallThumbnail}
           />
+          )
+          :
+          <Empty />
+
         }
         actions={[
           <Rate disabled value={book.averageRating} />,
@@ -70,8 +76,11 @@ class BookCard extends Component {
           // }
           title={book.title}
           description={
-            book.authors.map((item, index) => (<span key={index}>{index > 0? ", ":""}{item}</span>))
-          }
+            book.authors?
+              book.authors.map((item, index) => (<span key={index}>{index > 0? ", ":""}{item}</span>))
+              :
+              <span>Unknown Author</span>
+            }
         />
       </Card>
     );
