@@ -1,0 +1,33 @@
+/* Code copy from: https://wdexplorer.com/20-examples-beautiful-css-typography-design/ */
+
+
+.subheader {
+  font-size: 18px;
+  font-weight: 300;
+  color: #082187;
+  margin: 0 0 24px;
+}
+
+p {
+  color: #4c4a37;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
+  line-height: 32px;
+  margin: 0 0 24px;
+}
+
+a {
+  color:  rgb(24, 144, 255);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ffcc66;
+}
+
+.bg-description {
+    margin: 10px 0 10px 0;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: rgba(24, 144, 255, 0.1);
+}

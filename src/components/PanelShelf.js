@@ -35,14 +35,18 @@ class PanelShelf extends Component {
         loadding={isLoading}
         accordion={false}
       >
-        <Panel header={title} key={index} className="shelfside">
+        <Panel 
+          header={<h2 style={{margin: 0}}>{title}</h2>} 
+          key={index} 
+          className="shelfside"
+          >
           {isLoading ? (
             <div style={{textAlign: 'center', marginBottom: 20}}>
               <Spin size="large" tip="Loading..." />
             </div>
           ) : booksList.length === 0 ? (
             <div className="col-xs-12 shelf">
-              <h3>{ emptyText }</h3>
+              <span className="subheader ">{ emptyText }</span>
             </div>
           ) : (
             <BookList booksList={booksList} updateBookShelf={updateBookShelf} />

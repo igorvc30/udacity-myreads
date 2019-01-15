@@ -13,7 +13,7 @@ class App extends Component {
         <Layout className="layout">
           <Header>
             <Link to="/">
-              <h2 id="top">MyReads</h2>
+              <h1 class="my-reads" id="top">MyReads</h1>
             </Link>
           </Header>
 

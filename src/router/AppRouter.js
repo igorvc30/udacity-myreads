@@ -1,5 +1,6 @@
 import BookManager from './../screens/BookManager';
 import SearchBook from './../screens/SearchBook';
+import BookInfo from './../screens/BookInfo';
 
 const appRoutes = [
     {
@@ -12,6 +13,12 @@ const appRoutes = [
       name: "Search",
       path: "/search",
       component: SearchBook,
+      exact: true
+    },
+    {
+      name: "Information",
+      path: "/info/:id",
+      component: BookInfo,
       exact: true
     },
     

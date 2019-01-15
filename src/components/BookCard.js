@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types'
-import { Card, Icon, Menu, Dropdown, Button, Rate, Empty } from "antd";
+import { Card, Button, Rate, Empty } from "antd";
+import { Link } from "react-router-dom";
+import MenuShelf from './MenuShelf';
+import "./BookCard.css";
 
 class BookCard extends Component {
 
@@ -9,71 +12,86 @@ class BookCard extends Component {
     updateBookShelf: PropTypes.func.isRequired,
   }
 
-  handleMenuClick = (e) => {
-    const { book, updateBookShelf } = this.props;
-    const { key } = e;
-    updateBookShelf(book, key)
-  }
+  static defaultProps = {
+    book: {},
+    updateBookShelf: () =>{},
+  };
 
-  handleStarChange = (value) => {
-    // this.setState({ value });
-    console.log("starts: ", value);
-  }
+ 
 
   render() {
     const { Meta } = Card;
-    const { book } = this.props;
-    const MenuItemGroup = Menu.ItemGroup;
+    const { book, updateBookShelf } = this.props;
 
-    const menu = (
-      <Menu onClick={this.handleMenuClick} inlineIndent={0}> 
-        <MenuItemGroup key="g1" title="Move to...">
-          <Menu.Item key="currentlyReading">
-            Currently Reading &nbsp;
-            {book.shelf === "currentlyReading" && <Icon type="check" />}
-          </Menu.Item>
-          <Menu.Item key="wantToRead">
-            Want to read &nbsp;
-            {book.shelf === "wantToRead" && <Icon type="check" />}
-          </Menu.Item>
-          <Menu.Item key="read">
-            Read &nbsp;
-            {book.shelf === "read" && <Icon type="check" />}
-          </Menu.Item>
-          <Menu.Item key="none">
-            None &nbsp;
-            {book.shelf === "none" &&<Icon type="check" />}
-          </Menu.Item>
-        </MenuItemGroup>
-      </Menu>
-    );
+    // const menu = (
+    //   <Menu onClick={this.handleMenuClick} inlineIndent={0}> 
+    //     <MenuItemGroup key="g1" title="Move to...">
+    //       <Menu.Item key="currentlyReading">
+    //         Currently Reading &nbsp;
+    //         {book.shelf === "currentlyReading" && <Icon type="check" />}
+    //       </Menu.Item>
+    //       <Menu.Item key="wantToRead">
+    //         Want to read &nbsp;
+    //         {book.shelf === "wantToRead" && <Icon type="check" />}
+    //       </Menu.Item>
+    //       <Menu.Item key="read">
+    //         Read &nbsp;
+    //         {book.shelf === "read" && <Icon type="check" />}
+    //       </Menu.Item>
+    //       <Menu.Item key="none">
+    //         None &nbsp;
+    //         {book.shelf === "none" &&<Icon type="check" />}
+    //       </Menu.Item>
+    //     </MenuItemGroup>
+    //   </Menu>
+    // );
 
     return (
       <Card style={{ width: 200, marginTop: 16 }}
         cover={
-          book.imageLinks?
-          (
-          <img
-            height="220px"
-            alt="Book cover"
-            src={book.imageLinks.smallThumbnail}
-          />
-          )
-          :
-          <Empty />
+          <div class="container">
+            {
+            book.imageLinks?
+            (
+            <img
+              height="220px"
+              alt="Book cover"
+              className="image"
+              src={book.imageLinks.smallThumbnail}
+            />
+            )
+            :
+            <Empty />
+            }
+            {/* <Link to={`/info/${book.id}`}> */}
+            <Link
+              to={{
+                  pathname: `/info/${book.id}`,
+                  state: {
+                    updateBookShelf: updateBookShelf
+                  }
+                }}
+              >
+              <div class="middle">
+                <Button type="primary" shape="circle" icon="search" size="large"/>
+              </div>
+            </Link>
 
+          </div>
         }
         actions={[
           <Rate disabled value={book.averageRating} />,
-          <Dropdown overlay={menu}>
-            <Button type="primary" shape="circle" size="small" icon="caret-down" />
-          </Dropdown>
+          <MenuShelf updateBookShelf={updateBookShelf} book={book}/>
+
+          // <Dropdown 
+          //   overlay={
+          //     <MenuShelf updateBookShelf={updateBookShelf} />
+          //   }>
+          //   <Button type="primary" shape="circle" size="small" icon="caret-down" />
+          // </Dropdown>
         ]}
       >
         <Meta
-          // avatar={
-          //   <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-          // }
           title={book.title}
           description={
             book.authors?

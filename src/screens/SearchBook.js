@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Input, Icon } from "antd";
+import { Input, Icon, Affix, Button } from "antd";
 import PanelShelf from "./../components/PanelShelf";
 import { search } from "../api/BooksAPI";
 import { Link } from "react-router-dom";
@@ -119,6 +119,11 @@ class SearchBook extends Component {
             index={0}
           />
         )}
+        <Affix offsetBottom={80} style={{ position: "absolute", right: 50 }}>
+        <Link to="/">    
+          <Button shape="circle" size="large" icon="home" type="primary" />
+        </Link>
+        </Affix>
       </div>
     );
   }
