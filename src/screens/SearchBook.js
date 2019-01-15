@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Input, Icon, Affix, Button } from "antd";
-import PanelShelf from "./../components/PanelShelf";
-import { search } from "../api/BooksAPI";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Input, Icon, Affix, Button } from 'antd';
+import PanelShelf from './../components/PanelShelf';
+import { search } from '../api/BooksAPI';
+import { Link } from 'react-router-dom';
 
 class SearchBook extends Component {
   static propTypes = {
@@ -24,7 +24,7 @@ class SearchBook extends Component {
   state = {
     books: null, //null means: not showing the result list and that nothing has been search
     isLoading: false,
-    emptyText: ""
+    emptyText: ''
   };
 
   componentDidMount() {
@@ -56,10 +56,7 @@ class SearchBook extends Component {
            * but, ${books} is expected to be an array. Once the state is updated, it will call a method
            * to update the status of all books
            */
-          this.setState(
-            { books: Array.isArray(success) ? success : [] },
-            this.setMyBooksShelves
-          );
+          this.setState({ books: Array.isArray(success) ? success : [] }, this.setMyBooksShelves);
         },
         error => {
           this.setState({ emptyText: error.error });
@@ -79,10 +76,10 @@ class SearchBook extends Component {
     for (let i = 0; i < books.length; i++) {
       const found = myBooks.filter(b => books[i].id === b.id);
       if (found[0]) {
-        console.log("%d: %s", i, JSON.stringify(found[0]));
+        console.log('%d: %s', i, JSON.stringify(found[0]));
         tempBooks[i].shelf = found[0].shelf;
       } else {
-        tempBooks[i].shelf = "none";
+        tempBooks[i].shelf = 'none';
       }
       this.setState({ books: tempBooks });
     }
@@ -112,17 +109,15 @@ class SearchBook extends Component {
             title="Search Results"
             booksList={books}
             updateBookShelf={updateBookShelf}
-            emptyText={
-              emptyText.length > 1 ? emptyText : "Sorry, no book found."
-            }
+            emptyText={emptyText.length > 1 ? emptyText : 'Sorry, no book found.'}
             isLoading={isLoading}
             index={0}
           />
         )}
-        <Affix offsetBottom={80} style={{ position: "absolute", right: 50 }}>
-        <Link to="/">    
-          <Button shape="circle" size="large" icon="home" type="primary" />
-        </Link>
+        <Affix offsetBottom={80} style={{ position: 'absolute', right: 50 }}>
+          <Link to="/">
+            <Button shape="circle" size="large" icon="home" type="primary" />
+          </Link>
         </Affix>
       </div>
     );

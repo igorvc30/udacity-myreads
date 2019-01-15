@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { getAll, update } from "../api/BooksAPI";
-import { Affix, Button, message } from "antd";
-import PanelShelf from "./../components/PanelShelf";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { getAll, update } from '../api/BooksAPI';
+import { Affix, Button, message } from 'antd';
+import PanelShelf from './../components/PanelShelf';
+import { Link } from 'react-router-dom';
 
 class BookManager extends Component {
   state = {
@@ -42,17 +42,14 @@ class BookManager extends Component {
   };
 
   render() {
-
     const { books, isLoading } = this.state;
-    const currentlyReadingList = books.filter(
-      book => book.shelf === "currentlyReading"
-    );
-    const wantToReadList = books.filter(book => book.shelf === "wantToRead");
-    const readList = books.filter(book => book.shelf === "read");
+    const currentlyReadingList = books.filter(book => book.shelf === 'currentlyReading');
+    const wantToReadList = books.filter(book => book.shelf === 'wantToRead');
+    const readList = books.filter(book => book.shelf === 'read');
     const panelContent = [
-      { title: "Currently Reading", booksList: currentlyReadingList },
-      { title: "Want to Read", booksList: wantToReadList },
-      { title: "Read", booksList: readList }
+      { title: 'Currently Reading', booksList: currentlyReadingList },
+      { title: 'Want to Read', booksList: wantToReadList },
+      { title: 'Read', booksList: readList }
     ];
     return (
       <div>
@@ -67,10 +64,10 @@ class BookManager extends Component {
           />
         ))}
 
-        <Affix offsetBottom={80} style={{ position: "absolute", right: 50 }}>
+        <Affix offsetBottom={80} style={{ position: 'absolute', right: 50 }}>
           <Link
             to={{
-              pathname: "/search",
+              pathname: '/search',
               state: {
                 myBooks: this.state.books,
                 updateBookShelf: this.updateBookShelf

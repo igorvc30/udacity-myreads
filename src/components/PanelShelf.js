@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Spin, Collapse } from "antd";
-import BookList from "./BookList";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Spin, Collapse } from 'antd';
+import BookList from './BookList';
 
 /* The content inside will be displayed in the order of priority, it can only show one option:
   1st: while fetching data it will display a loading
@@ -17,13 +17,13 @@ class PanelShelf extends Component {
   };
 
   static defaultProps = {
-    title: "",
+    title: '',
     index: 0,
     isLoading: false,
     booksList: [],
     updateBookShelf: () => {},
-    emptyText: "Shelf is empty"
- };
+    emptyText: 'Shelf is empty'
+  };
 
   render() {
     const Panel = Collapse.Panel;
@@ -31,28 +31,24 @@ class PanelShelf extends Component {
     return (
       <Collapse
         bordered={false}
-        defaultActiveKey={["0", "1", "2"]}
+        defaultActiveKey={['0', '1', '2']}
         loadding={isLoading}
-        accordion={false}
       >
-        <Panel 
-          header={<h2 style={{margin: 0}}>{title}</h2>} 
-          key={index} 
-          className="shelfside"
-          >
+        <Panel header={<h2 style={{ margin: 0 }}>{title}</h2>} key={index} className="shelfside">
           {isLoading ? (
-            <div style={{textAlign: 'center', marginBottom: 20}}>
+            <div style={{ textAlign: 'center', marginBottom: 20 }}>
               <Spin size="large" tip="Loading..." />
             </div>
           ) : booksList.length === 0 ? (
             <div className="col-xs-12 shelf">
-              <span className="subheader ">{ emptyText }</span>
+              <span className="subheader ">{emptyText}</span>
             </div>
           ) : (
             <BookList booksList={booksList} updateBookShelf={updateBookShelf} />
           )}
         </Panel>
-        <div className="shelf" />
+        {/* Here is a code for style as a shelf, its throwing many error on console.  */}
+        <div className="shelf" /> 
       </Collapse>
     );
   }
