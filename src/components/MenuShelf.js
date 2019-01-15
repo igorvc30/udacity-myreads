@@ -22,28 +22,23 @@ class MenuShelf extends Component {
   render() {
     const MenuItemGroup = Menu.ItemGroup;
     const { book } = this.props;
-    
+    const options = [
+      { name: 'Currently Reading', shelf: 'currentlyReading' },
+      { name: 'Want To Read', shelf: 'wantToRead' },
+      { name: 'Read', shelf: 'read' },
+      { name: 'None', shelf: 'none' }
+    ];
     return (
       <Dropdown
         overlay={
           <Menu onClick={this.handleMenuClick} inlineIndent={0}>
             <MenuItemGroup key="g1" title="Move to...">
-              <Menu.Item key="currentlyReading">
-                Currently Reading &nbsp;
-                {book.shelf === 'currentlyReading' && <Icon type="check" />}
-              </Menu.Item>
-              <Menu.Item key="wantToRead">
-                Want to read &nbsp;
-                {book.shelf === 'wantToRead' && <Icon type="check" />}
-              </Menu.Item>
-              <Menu.Item key="read">
-                Read &nbsp;
-                {book.shelf === 'read' && <Icon type="check" />}
-              </Menu.Item>
-              <Menu.Item key="none">
-                None &nbsp;
-                {book.shelf === 'none' && <Icon type="check" />}
-              </Menu.Item>
+              {options.map((item, index) => (
+                <Menu.Item key={item.shelf} disabled={book.shelf === item.shelf}>
+                  {item.name} &nbsp;
+                  {book.shelf === item.shelf && <Icon type="check" />}
+                </Menu.Item>
+              ))}
             </MenuItemGroup>
           </Menu>
         }

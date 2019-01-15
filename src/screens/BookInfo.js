@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { get } from '../api/BooksAPI';
-import { Card, Rate, Empty, Row, Col, Affix, Button, Tag, Icon } from 'antd';
+import { Card, Rate, Empty, Row, Col, Affix, Button, Tag, Icon, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 
 import MenuShelf from './../components/MenuShelf';
@@ -25,7 +25,8 @@ class BookInfo extends Component {
     const { book, updateBookShelf } = this.state;
     const { Meta } = Card;
 
-    return (
+    //checks if the book object is empty to render a Skeleton while aplication is fetching data
+    return Object.keys(book).length ? (
       <div>
         <Row>
           <Col span={8}>
@@ -84,7 +85,7 @@ class BookInfo extends Component {
             {book.language && <Tag>{book.language.toUpperCase()}</Tag>}
             {book.infoLink && (
               <p>
-                <Icon type="link" /> <a url={book.infoLink}>More details</a>
+                <Icon type="link" /> <a href={book.infoLink}>More details</a>
               </p>
             )}
           </Col>
@@ -95,6 +96,8 @@ class BookInfo extends Component {
           </Link>
         </Affix>
       </div>
+    ) : (
+      <Skeleton active loading paragraph={{ rows: 10 }} />
     );
   }
 }
