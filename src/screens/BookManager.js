@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { getAll, update } from '../api/BooksAPI';
-import { Affix, Button, message } from 'antd';
-import PanelShelf from './../components/PanelShelf';
-import { Link } from 'react-router-dom';
+import { message } from 'antd';
+import MyShelves from './MyShelves';
+import SearchBook from './../screens/SearchBook';
+import BookInfo from './../screens/BookInfo';
+
+import { Route, Switch } from 'react-router-dom';
 
 class BookManager extends Component {
   state = {
@@ -25,17 +28,24 @@ class BookManager extends Component {
    */
   updateBookShelf = (book, shelf) => {
     this.setState({ isLoading: true });
+
     const index = this.state.books.findIndex(b => b.id === book.id);
     let books = [...this.state.books];
+
     update(book, shelf)
       .then(
         success => {
-          (books[index].shelf = shelf),
-            this.setState({ books }),
-            message.success(`${book.title} has changed to ${shelf} shelf!`);
+          //if the book is already at any shelf it will be update at books state, 
+          //otherwise it will be inserted at books state
+          if (index >= 0) {
+            books[index].shelf = shelf;
+          } else {
+            books = [...books, book];
+          }
+          this.setState({ books }), message.success(`${book.title} has changed to ${shelf} shelf!`);
         },
         error => {
-          message.error(`Houston we have a problem! Try again, it will work!`);
+          message.error(`Houston we have a problem! Try again soon!`);
         }
       )
       .finally(this.setState({ isLoading: false }));
@@ -43,41 +53,43 @@ class BookManager extends Component {
 
   render() {
     const { books, isLoading } = this.state;
-    const currentlyReadingList = books.filter(book => book.shelf === 'currentlyReading');
-    const wantToReadList = books.filter(book => book.shelf === 'wantToRead');
-    const readList = books.filter(book => book.shelf === 'read');
-    const panelContent = [
-      { title: 'Currently Reading', booksList: currentlyReadingList },
-      { title: 'Want to Read', booksList: wantToReadList },
-      { title: 'Read', booksList: readList }
-    ];
-    return (
-      <div>
-        {panelContent.map((panel, index) => (
-          <PanelShelf
-            title={panel.title}
-            index={index}
-            isLoading={isLoading}
-            booksList={panel.booksList}
-            updateBookShelf={this.updateBookShelf}
-            key={index}
-          />
-        ))}
 
-        <Affix offsetBottom={80} style={{ position: 'absolute', right: 50 }}>
-          <Link
-            to={{
-              pathname: '/search',
-              state: {
-                myBooks: this.state.books,
-                updateBookShelf: this.updateBookShelf
-              }
-            }}
-          >
-            <Button shape="circle" size="large" icon="plus" type="primary" />
-          </Link>
-        </Affix>
-      </div>
+    return (
+      <Switch>
+        <Route
+          name="Home"
+          path="/"
+          exact={true}
+          render={() => (
+            <MyShelves books={books} isLoading={isLoading} updateBookShelf={this.updateBookShelf} />
+          )}
+        />
+
+        <Route
+          name="Search"
+          path="/search"
+          exact={true}
+          component={() => (
+            <SearchBook
+              books={books}
+              isLoading={isLoading}
+              updateBookShelf={this.updateBookShelf}
+            />
+          )}
+        />
+        {/* https://stackoverflow.com/questions/35352638/how-to-get-parameter-value-from-query-string */}
+        <Route
+          name="Information"
+          path="/info/:id"
+          exact={true}
+          component={props => <BookInfo updateBookShelf={this.updateBookShelf} {...props} />}
+        />
+        <Route
+          render={() => (
+            <MyShelves books={books} isLoading={isLoading} updateBookShelf={this.updateBookShelf} />
+          )}
+        />
+      </Switch>
     );
   }
 }

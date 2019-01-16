@@ -63,7 +63,7 @@ ul.ant-card-actions > li:last-child{
   border-bottom: 30px solid #855E42;
   border-left: 20px solid transparent;    
   border-right: 20px solid #f0161600; 
-  top: -15px;
+  margin-top: -15px;
   z-index: -1;
   margin-left: -20px; 
   margin-right: -20px;
@@ -89,14 +89,7 @@ ul.ant-card-actions > li:last-child{
   color: white;
   font-size: 40px;
 }
-/*
-h3{
-  text-shadow: 1px 1px #000;
-  text-align: center;
-  color: #855E42;
-  font-family:"Impact";
-  font-size: 40px;
-} */
+
 h1 {
   color: rgb(8, 47, 83);
   font-family: "Trocchi", serif;

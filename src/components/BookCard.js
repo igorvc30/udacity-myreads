@@ -24,7 +24,7 @@ class BookCard extends Component {
       <Card
         style={{ width: 200, marginTop: 16 }}
         cover={
-          <div class="container">
+          <div className="container">
             {book.imageLinks ? (
               <img
                 height="220px"
@@ -35,15 +35,8 @@ class BookCard extends Component {
             ) : (
               <Empty />
             )}
-            <Link
-              to={{
-                pathname: `/info/${book.id}`,
-                state: {
-                  updateBookShelf: updateBookShelf
-                }
-              }}
-            >
-              <div class="middle">
+            <Link to={`/info/${book.id}`}>
+              <div className="middle">
                 <Button type="primary" shape="circle" icon="search" size="large" />
               </div>
             </Link>

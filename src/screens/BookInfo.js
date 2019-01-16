@@ -9,20 +9,25 @@ import './BookInfo.css';
 class BookInfo extends Component {
   state = {
     book: {},
-    isLoading: true,
-    updateBookShelf: () => {}
+    isLoading: true
+    //   updateBookShelf: () => {}
   };
 
   componentDidMount() {
     const id = this.props.match.params.id;
-    get(id).then(book => this.setState({ book, isLoading: false }));
-    this.setState({
-      updateBookShelf: this.props.location.state.updateBookShelf
-    });
+    if (id.length > 0) {
+      get(id).then(book => this.setState({ book, isLoading: false }));
+      // this.setState({
+      //   updateBookShelf: this.props.location.state.updateBookShelf
+      // });
+    } else {
+      console.log('url vazia');
+    }
   }
 
   render() {
-    const { book, updateBookShelf } = this.state;
+    const { book } = this.state;
+    const { updateBookShelf } = this.props;
     const { Meta } = Card;
 
     //checks if the book object is empty to render a Skeleton while aplication is fetching data

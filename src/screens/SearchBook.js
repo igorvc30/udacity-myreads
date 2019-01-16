@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Icon, Affix, Button } from 'antd';
-import PanelShelf from './../components/PanelShelf';
 import { search } from '../api/BooksAPI';
 import { Link } from 'react-router-dom';
+import BookList from './../components/BookList';
 
 class SearchBook extends Component {
   static propTypes = {
@@ -21,17 +21,20 @@ class SearchBook extends Component {
     this.timeout = null;
   }
 
+  /**
+   * variable emptyText will flag when to show a text, the text will indicate if the page is loading,
+   * if there is any result from the query or any error from api
+   */
   state = {
-    books: null, //null means: not showing the result list and that nothing has been search
+    books: [],
     isLoading: false,
-    emptyText: ''
+    emptyText: '',
+    searchText: ''
   };
 
   componentDidMount() {
-    console.log(this.props.location.state);
     this.setState({
-      myBooks: this.props.location.state.myBooks,
-      updateBookShelf: this.props.location.state.updateBookShelf
+      myBooks: this.props.books
     });
   }
 
@@ -40,7 +43,7 @@ class SearchBook extends Component {
     if (this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       if (searchText.trim().length === 0) {
-        this.setState({ books: null });
+        this.setState({ books: [], emptyText: '' });
       } else {
         this.searchBooks(searchText);
       }
@@ -48,7 +51,7 @@ class SearchBook extends Component {
   };
 
   searchBooks = query => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, emptyText: 'Searching...' });
     search(query)
       .then(
         success => {
@@ -56,7 +59,13 @@ class SearchBook extends Component {
            * but, ${books} is expected to be an array. Once the state is updated, it will call a method
            * to update the status of all books
            */
-          this.setState({ books: Array.isArray(success) ? success : [] }, this.setMyBooksShelves);
+          this.setState(
+            {
+              books: Array.isArray(success) ? success : [],
+              emptyText: Array.isArray(success) ? '' : 'Sorry, no book found.'
+            },
+            this.setMyBooksShelves
+          );
         },
         error => {
           this.setState({ emptyText: error.error });
@@ -76,7 +85,6 @@ class SearchBook extends Component {
     for (let i = 0; i < books.length; i++) {
       const found = myBooks.filter(b => books[i].id === b.id);
       if (found[0]) {
-        console.log('%d: %s', i, JSON.stringify(found[0]));
         tempBooks[i].shelf = found[0].shelf;
       } else {
         tempBooks[i].shelf = 'none';
@@ -86,7 +94,8 @@ class SearchBook extends Component {
   }
 
   render() {
-    const { books, updateBookShelf, isLoading, emptyText } = this.state;
+    const { books, isLoading, emptyText, searchText } = this.state;
+    const { updateBookShelf } = this.props;
     const backToHome = (
       <Link to="/">
         <Icon type="arrow-left" />
@@ -97,6 +106,7 @@ class SearchBook extends Component {
         <div>
           <div style={{ marginBottom: 16 }}>
             <Input
+              value={searchText}
               addonBefore={backToHome}
               placeholder="Search by title or author"
               size="large"
@@ -104,16 +114,16 @@ class SearchBook extends Component {
             />
           </div>
         </div>
-        {books && (
-          <PanelShelf
+        {books.length === 0 && <h2>{emptyText}</h2>}
+        {books.length > 0 && (
+          <BookList
             title="Search Results"
             booksList={books}
             updateBookShelf={updateBookShelf}
-            emptyText={emptyText.length > 1 ? emptyText : 'Sorry, no book found.'}
             isLoading={isLoading}
-            index={0}
           />
         )}
+
         <Affix offsetBottom={80} style={{ position: 'absolute', right: 50 }}>
           <Link to="/">
             <Button shape="circle" size="large" icon="home" type="primary" />
