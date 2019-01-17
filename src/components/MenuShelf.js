@@ -33,7 +33,7 @@ class MenuShelf extends Component {
         overlay={
           <Menu onClick={this.handleMenuClick} inlineIndent={0}>
             <MenuItemGroup key="g1" title="Move to...">
-              {options.map((item, index) => (
+              {options.map((item) => (
                 <Menu.Item key={item.shelf} disabled={book.shelf === item.shelf}>
                   {item.name} &nbsp;
                   {book.shelf === item.shelf && <Icon type="check" />}

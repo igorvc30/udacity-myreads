@@ -1,37 +1,47 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { get } from '../api/BooksAPI';
 import { Card, Rate, Empty, Row, Col, Affix, Button, Tag, Icon, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
-
 import MenuShelf from './../components/MenuShelf';
 import './BookInfo.css';
 
 class BookInfo extends Component {
+  
+  static propTypes = {
+    updateBookShelf: PropTypes.func.isRequired
+  };
+
   state = {
     book: {},
-    isLoading: true
-    //   updateBookShelf: () => {}
+    isLoading: true,
+    errorMessage: 'Loading...'
   };
 
   componentDidMount() {
     const id = this.props.match.params.id;
     if (id.length > 0) {
-      get(id).then(book => this.setState({ book, isLoading: false }));
-      // this.setState({
-      //   updateBookShelf: this.props.location.state.updateBookShelf
-      // });
+      get(id).then(
+        success => {
+          this.setState({ book: success, isLoading: false })
+        },
+      error => {
+        this.setState({ errorMessage: 'No book found with the id provided.'});
+      }
+        );
     } else {
-      console.log('url vazia');
+      this.setState({ errorMessage: 'No book id provided, unable to search.'});
     }
   }
 
   render() {
-    const { book } = this.state;
+    const { book, errorMessage } = this.state;
     const { updateBookShelf } = this.props;
     const { Meta } = Card;
-
     //checks if the book object is empty to render a Skeleton while aplication is fetching data
-    return Object.keys(book).length ? (
+    return (
+      <div>
+      {Object.keys(book).length ? (
       <div>
         <Row>
           <Col span={8}>
@@ -95,15 +105,20 @@ class BookInfo extends Component {
             )}
           </Col>
         </Row>
-        <Affix offsetBottom={80} style={{ position: 'absolute', right: 50 }}>
-          <Link to="/">
-            <Button shape="circle" size="large" icon="home" type="primary" />
-          </Link>
-        </Affix>
       </div>
     ) : (
-      <Skeleton active loading paragraph={{ rows: 10 }} />
-    );
+      <div>
+        <h2>{ errorMessage }</h2>
+        <Skeleton active loading paragraph={{ rows: 10 }} />
+      </div>
+    )}
+      <Affix offsetBottom={80} style={{ position: 'absolute', right: 50 }}>
+                <Link to="/">
+                  <Button shape="circle" size="large" icon="home" type="primary" />
+                </Link>
+        </Affix>
+      </div>
+    )
   }
 }
 
