@@ -40,6 +40,7 @@ class SearchBook extends Component {
 
   onInputChange = e => {
     let searchText = e.target.value; // this is the search text
+    this.setState({ searchText });
     if (this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       if (searchText.trim().length === 0) {

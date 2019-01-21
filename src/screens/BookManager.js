@@ -30,7 +30,9 @@ class BookManager extends Component {
     this.setState({ isLoading: true });
 
     const index = this.state.books.findIndex(b => b.id === book.id);
-    let books = [...this.state.books];
+    // https://stackoverflow.com/questions/42844535/how-to-update-react-state-array-of-objects
+    let books = this.state.books.map(b => Object.assign({}, b));
+
 
     update(book, shelf)
       .then(
@@ -38,11 +40,12 @@ class BookManager extends Component {
           //if the book is already at any shelf it will be update at books state, 
           //otherwise it will be inserted at books state
           if (index >= 0) {
-            books[index].shelf = shelf;
+            books[index] = {...book, shelf};
           } else {
+            book.shelf = shelf;
             books = [...books, book];
           }
-          this.setState({ books }), message.success(`${book.title} has changed to ${shelf} shelf!`);
+          this.setState({ books },() => message.success(`${book.title} has changed to ${shelf} shelf!`));
         },
         error => {
           message.error(`Houston we have a problem! Try again soon!`);
